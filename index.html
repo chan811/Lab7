@@ -85,6 +85,11 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchAll() {
         // TODO
+        let endpoint = document.getElementById('endpoint');
+        let output = document.getElementById('output');
+        fetch(endpoint.value)
+        .then(response => response.json())
+        .then(data => output.innerHTML = JSON.stringify(data));
       }
 
       // This function should fetch one entry from the given endpoint.
@@ -93,6 +98,13 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchOne() {
         // TODO
+        let endpoint = document.getElementById('endpoint');
+        let output = document.getElementById('output');
+        let id = prompt('Enter record id');
+        fetch(endpoint.value + '/' + id)
+        .then(response => response.json())
+        .then(data => output.innerHTML = JSON.stringify(data))
+        .catch(error => output.innerHTML = error);
       }
 
       // This function should use fetch to create one entry in the given endpoint.
@@ -101,6 +113,38 @@
       // the writeup to view the URL pattern for create and update
       function createRecord() {
         // TODO
+        let endpoint = document.getElementById('endpoint');
+        let output = document.getElementById('output');
+        let recordForm = document.getElementById('recordForm');
+        recordForm.style.display = "initial";
+
+        
+
+        recordForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          let title = document.getElementById('title');
+          let author = document.getElementById('author');
+          let postData = {
+            title: title.value,
+            author: author.value,
+          };
+
+          fetch(endpoint.value, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+          })
+          .then(response => response.json())
+          .then(data => output.innerHTML = JSON.stringify(data))
+          .catch(error => output.innerHTML = error);
+
+          recordForm.style.display = "none";
+        });
+
+        
+        
       }
 
       // This function should use fetch to update one existing entry in the given endpoint.
@@ -109,6 +153,36 @@
       // the writeup to view the URL pattern for create and update
       function updateRecord() {
         // TODO
+        let recordForm = document.getElementById('recordForm');
+        var recordIDcontainer = document.getElementById('recordIDcontainer');
+        recordForm.style.display = "initial";
+        recordIDcontainer.style.display = "initial";
+
+        recordForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          let title = document.getElementById('title');
+          let author = document.getElementById('author');
+          let recordID = document.getElementById('recordID');
+          
+          let postData = {
+            title: title.value,
+            author: author.value,
+          };
+
+          fetch(endpoint.value + '/' + recordID.value, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+          })
+          .then(response => response.json())
+          .then(data => output.innerHTML = JSON.stringify(data))
+          .catch(error => output.innerHTML = error);
+
+          recordForm.style.display = "none";
+        });
+
       }
 
       // This function should use fetch to delete one existing entry in the given endpoint.
@@ -118,6 +192,13 @@
       // delete all, only delete one.
       function deleteRecord() {
         // TODO
+        let id = prompt('Enter record id');
+        let output = document.getElementById('output');
+        fetch(endpoint.value + '/' + id, {
+          method: 'DELETE',
+        })
+        .catch(error => output.innerHTML = error);
+
       }
 
       window.addEventListener('DOMContentLoaded', () => {
