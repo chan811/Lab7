@@ -94,8 +94,11 @@
         let endpoint = document.getElementById('endpoint');
         let output = document.getElementById('output');
         fetch(endpoint.value)
-        .then(response => response.json())
-        .then(data => output.innerHTML = JSON.stringify(data));
+        .then(response => {
+          if(!response.ok) throw new Error(response.status + ' ' + response.statusText);
+          return response.json();})
+        .then(data => output.innerHTML = JSON.stringify(data))
+        .catch(error => output.innerHTML = error);
       }
 
       // This function should fetch one entry from the given endpoint.
@@ -114,7 +117,9 @@
         let output = document.getElementById('output');
         let id = prompt('Enter record id');
         fetch(endpoint.value + '/' + id)
-        .then(response => response.json())
+        .then(response => {
+          if(!response.ok) throw new Error(response.status + ' ' + response.statusText);
+          return response.json();})
         .then(data => output.innerHTML = JSON.stringify(data))
         .catch(error => output.innerHTML = error);
 
@@ -157,7 +162,9 @@
             },
             body: JSON.stringify(postData),
           })
-          .then(response => response.json())
+          .then(response => {
+          if(!response.ok) throw new Error(response.status + ' ' + response.statusText);
+          return response.json();})
           .then(data => output.innerHTML = JSON.stringify(data))
           .catch(error => output.innerHTML = error);
         }
@@ -201,7 +208,9 @@
             },
             body: JSON.stringify(postData),
           })
-          .then(response => response.json())
+          .then(response => {
+          if(!response.ok) throw new Error(response.status + ' ' + response.statusText);
+          return response.json();})
           .then(data => output.innerHTML = JSON.stringify(data))
           .catch(error => output.innerHTML = error);
 
@@ -227,7 +236,9 @@
         fetch(endpoint.value + '/' + id, {
           method: 'DELETE',
         })
-        .then(response => response.json())
+        .then(response => {
+          if(!response.ok) throw new Error(response.status + ' ' + response.statusText);
+          return response.json();})
         .then(data => output.innerHTML = JSON.stringify(data))
         .catch(error => output.innerHTML = error);
 
