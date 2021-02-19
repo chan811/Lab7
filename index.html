@@ -215,12 +215,20 @@
       // request; check the writeup to view the URL pattern for get one and delete. THERE IS NO 
       // delete all, only delete one.
       function deleteRecord() {
-        // TODO
+        // hide recordForm
+        let recordForm = document.getElementById('recordForm');
+        var recordIDcontainer = document.getElementById('recordIDcontainer');
+        recordForm.style.display = "none";
+        recordIDcontainer.style.display = "none";
+
+        // DELETE request after prompting user for id
         let id = prompt('Enter record id');
         let output = document.getElementById('output');
         fetch(endpoint.value + '/' + id, {
           method: 'DELETE',
         })
+        .then(response => response.json())
+        .then(data => output.innerHTML = JSON.stringify(data))
         .catch(error => output.innerHTML = error);
 
       }
