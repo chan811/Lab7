@@ -84,7 +84,13 @@
       // The main difference from fetchOne() will be the URL you request from; check
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchAll() {
-        // TODO
+        // hide recordForm
+        let recordForm = document.getElementById('recordForm');
+        var recordIDcontainer = document.getElementById('recordIDcontainer');
+        recordForm.style.display = "none";
+        recordIDcontainer.style.display = "none";
+
+        // GET request
         let endpoint = document.getElementById('endpoint');
         let output = document.getElementById('output');
         fetch(endpoint.value)
@@ -97,7 +103,13 @@
       // The main difference from fetchAll() will be the URL you request from; check
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchOne() {
-        // TODO
+        // hide recordForm
+        let recordForm = document.getElementById('recordForm');
+        var recordIDcontainer = document.getElementById('recordIDcontainer');
+        recordForm.style.display = "none";
+        recordIDcontainer.style.display = "none";
+
+        // GET request after prompting user for id
         let endpoint = document.getElementById('endpoint');
         let output = document.getElementById('output');
         let id = prompt('Enter record id');
@@ -105,6 +117,7 @@
         .then(response => response.json())
         .then(data => output.innerHTML = JSON.stringify(data))
         .catch(error => output.innerHTML = error);
+
       }
 
       // This function should use fetch to create one entry in the given endpoint.
@@ -112,16 +125,20 @@
       // The main difference from updateRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
       function createRecord() {
-        // TODO
-        let endpoint = document.getElementById('endpoint');
-        let output = document.getElementById('output');
-        let recordForm = document.getElementById('recordForm');
-        recordForm.style.display = "initial";
 
-        
+        if (arguments[0] == 'show') {
+          // show recordForm
+          let recordForm = document.getElementById('recordForm');
+          recordForm.style.display = "initial";
+          // hide recordIDcontainer
+          var recordIDcontainer = document.getElementById('recordIDcontainer');
+          recordIDcontainer.style.display = "none";
 
-        recordForm.addEventListener('submit', function(event) {
-          event.preventDefault();
+          // reset previous form inputs
+          recordForm.reset();          
+        }
+        else if (arguments[0] == 'submit') {
+          // create new post object from the current inputs in the recordForm
           let title = document.getElementById('title');
           let author = document.getElementById('author');
           let postData = {
@@ -129,6 +146,10 @@
             author: author.value,
           };
 
+          // variables for endpoint and output elements
+          let endpoint = document.getElementById('endpoint');
+          let output = document.getElementById('output');
+          // make the POST request 
           fetch(endpoint.value, {
             method: 'POST',
             headers: {
@@ -139,12 +160,8 @@
           .then(response => response.json())
           .then(data => output.innerHTML = JSON.stringify(data))
           .catch(error => output.innerHTML = error);
+        }
 
-          recordForm.style.display = "none";
-        });
-
-        
-        
       }
 
       // This function should use fetch to update one existing entry in the given endpoint.
@@ -152,23 +169,31 @@
       // The main difference from createRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
       function updateRecord() {
-        // TODO
-        let recordForm = document.getElementById('recordForm');
-        var recordIDcontainer = document.getElementById('recordIDcontainer');
-        recordForm.style.display = "initial";
-        recordIDcontainer.style.display = "initial";
 
-        recordForm.addEventListener('submit', function(event) {
-          event.preventDefault();
+        if (arguments[0] == 'show') {
+          // show recordForm and recordIDcontainer
+          let recordForm = document.getElementById('recordForm');
+          var recordIDcontainer = document.getElementById('recordIDcontainer');
+          recordForm.style.display = "initial";
+          recordIDcontainer.style.display = "initial";
+
+          // reset previous form inputs
+          recordForm.reset(); 
+        }
+        else if (arguments[0] == 'submit') {
+          // create new post object from the current inputs in the recordForm
           let title = document.getElementById('title');
           let author = document.getElementById('author');
-          let recordID = document.getElementById('recordID');
-          
           let postData = {
             title: title.value,
             author: author.value,
           };
 
+          // variables for endpoint and output elements, and recordID
+          let endpoint = document.getElementById('endpoint');
+          let output = document.getElementById('output');
+          let recordID = document.getElementById('recordID'); 
+          // make the PUT request
           fetch(endpoint.value + '/' + recordID.value, {
             method: 'PUT',
             headers: {
@@ -180,8 +205,7 @@
           .then(data => output.innerHTML = JSON.stringify(data))
           .catch(error => output.innerHTML = error);
 
-          recordForm.style.display = "none";
-        });
+        }
 
       }
 
